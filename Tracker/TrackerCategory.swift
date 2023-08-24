@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TrackerCategoryViewModel {
+struct TrackerCategory {
     let title: String
-    let trackers: [
+    var trackers: [Tracker]
 }

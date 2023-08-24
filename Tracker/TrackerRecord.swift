@@ -1,12 +1,6 @@
-//
-//  TrackerRecordViewModel.swift
-//  Tracker
-//
-//  Created by Эдуард Бухмиллер on 14.07.2023.
-//
+import UIKit
 
-import Foundation
-
-struct TrackerRecordViewModel {
-    
+struct TrackerRecord {
+    let id: UUID
+    let date: Date
 }

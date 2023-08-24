@@ -1,16 +1,14 @@
 import UIKit
 
-final class FooterSupplementaryView: UICollectionReusableView {
+final class HeaderSupplementaryView: UICollectionReusableView {
     
-    static let footerId = "footer"
+    static let headerId = "header"
     
-    private lazy var stackViews: UIStackView = {
-        let stackViews = UIStackView()
-        stackViews.translatesAutoresizingMaskIntoConstraints = false
-        stackViews.axis = .horizontal
-        stackViews.spacing = 8
-        stackViews.backgroundColor = .red
-        return stackViews
+    private lazy var headerLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "SFPro-Bold", size: 19)
+        return label
     }()
     
     override init(frame: CGRect) {
@@ -23,13 +21,17 @@ final class FooterSupplementaryView: UICollectionReusableView {
     }
     
     private func appViews() {
-        addSubview(stackViews)
+        addSubview(headerLabel)
         
         NSLayoutConstraint.activate([
-            stackViews.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackViews.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackViews.topAnchor.constraint(equalTo: topAnchor),
-            stackViews.bottomAnchor.constraint(equalTo: bottomAnchor)
+            headerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
+            headerLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -28),
+            headerLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            headerLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12)
         ])
+    }
+    
+    func configure(headerText: String) {
+        headerLabel.text = headerText
     }
 }

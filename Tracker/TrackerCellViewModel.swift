@@ -1,10 +1,11 @@
 import UIKit
 
-struct TrackerViewCellViewModel {
+struct TrackerCellViewModel {
     let name: String
     let emoji: String
     let color: UIColor?
-    let trackerIsDone: Bool
+    var trackerIsDone: Bool
     let doneButtonIsEnabled: Bool
-    let counter: UInt
+    var counter: UInt
+    let id: UUID
 }

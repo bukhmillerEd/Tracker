@@ -1,16 +1,10 @@
 import UIKit
 
-enum TypeCell {
-    case emoji
-    case color
-}
-
 final class EmojiAndColorCollectionViewCell: UICollectionViewCell {
     
     static let idCell = "idCell"
     
-    private var typeCell = TypeCell.color
-    priv
+    private var modelView: EmojiAndColorCollectionViewCellModelView? = nil
     
     private let emojiLabel: UILabel = {
         let lbl = UILabel()
@@ -55,23 +49,34 @@ final class EmojiAndColorCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    func configure(typeCell: TypeCell, emoji: String, color: UIColor?) {
-        if typeCell == .color {
-            colorView.backgroundColor = color
+    func configure(modelView: EmojiAndColorCollectionViewCellModelView) {
+        self.modelView = modelView
+        if modelView.typeCell == .color {
+            colorView.backgroundColor = modelView.color
             colorView.isHidden = false
         } else {
-            emojiLabel.text = emoji
+            emojiLabel.text = modelView.emoji
         }
     }
     
-    func selectCell(typeCell: TypeCell) {
-        if typeCell == .emoji {
+    func selectCell() {
+        guard let modelView else { return }
+        if modelView.typeCell == .emoji {
             layer.cornerRadius = 16
             backgroundColor = UIColor(named: "ypLightGray")
         } else {
             layer.borderWidth = 3
             layer.cornerRadius = 8
-            layer.borderColor =
+            layer.borderColor = modelView.color?.cgColor
+        }
+    }
+    
+    func deselectCell() {
+        guard let modelView else { return }
+        if modelView.typeCell == .emoji {
+            backgroundColor = .white
+        } else {
+            layer.borderWidth = 0
         }
     }
 }
