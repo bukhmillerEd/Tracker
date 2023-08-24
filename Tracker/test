@@ -1,0 +1,36 @@
+//
+//  LaunchScreenViewController.swift
+//  Tracker
+//
+//  Created by Эдуард Бухмиллер on 10.07.2023.
+//
+
+//import UIKit
+//
+//class LaunchScreenViewController: UIViewController {
+//    
+//    private lazy var logoImageView: UIImageView = {
+//        let imageView = UIImageView()
+//        imageView.translatesAutoresizingMaskIntoConstraints = false
+//        imageView.image = UIImage(named: "Logo")
+//        return imageView
+//    }()
+//    
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        view.backgroundColor = .blue
+//        addSubviews()
+//        applyConstraints()
+//    }
+//    
+//    private func addSubviews() {
+//        view.addSubview(logoImageView)
+//    }
+//    
+//    private func applyConstraints() {
+//        NSLayoutConstraint.activate([
+//            logoImageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+//            logoImageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor)
+//        ])
+//    }
+//}
