@@ -13,8 +13,8 @@ extension UIStackView {
     }
     
     func addSeparators(color: UIColor, thickness: CGFloat) {
-        for i in stride(from: arrangedSubviews.count - 1, through: 1, by: -1) {
-            addSeparator(color: color, thickness: thickness, index: i)
+        for index in stride(from: arrangedSubviews.count - 1, through: 1, by: -1) {
+            addSeparator(color: color, thickness: thickness, index: index)
         }
     }
 }

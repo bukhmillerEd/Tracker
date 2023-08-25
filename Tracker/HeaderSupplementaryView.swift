@@ -20,6 +20,10 @@ final class HeaderSupplementaryView: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configure(headerText: String) {
+        headerLabel.text = headerText
+    }
+    
     private func appViews() {
         addSubview(headerLabel)
         
@@ -31,7 +35,4 @@ final class HeaderSupplementaryView: UICollectionReusableView {
         ])
     }
     
-    func configure(headerText: String) {
-        headerLabel.text = headerText
-    }
 }

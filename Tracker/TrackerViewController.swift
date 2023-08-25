@@ -528,11 +528,7 @@ extension TrackerViewController: UICollectionViewDataSource {
         else {
             return UICollectionReusableView()
         }
-        if indexPath.section == 0 {
-            view.configure(headerText: "Emoji")
-        } else {
-            view.configure(headerText: "Цвет")
-        }
+        view.configure(headerText: indexPath.section == 0 ? "Emoji" : "Цвет")
         return view
     }
 
