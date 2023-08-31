@@ -24,11 +24,11 @@ final class ScheduleViewController: UIViewController {
     }()
     
     private lazy var titleLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = "Расписание"
-        lbl.font = UIFont(name: "SFPro-Medium", size: 16)
-        return lbl
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Расписание"
+        label.font = UIFont(name: "SFPro-Medium", size: 16)
+        return label
     }()
     
     private lazy var stack: UIStackView = {
@@ -42,15 +42,15 @@ final class ScheduleViewController: UIViewController {
     }()
     
     private lazy var doneButton: UIButton = {
-        let btn = UIButton()
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("Готово", for: .normal)
-        btn.titleLabel?.font = UIFont(name:"SFPro-Medium", size: 16)
-        btn.backgroundColor = .black
-        btn.tintColor = .white
-        btn.layer.cornerRadius = 16
-        btn.addTarget(self, action: #selector(doneTapped), for: .touchUpInside)
-        return btn
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Готово", for: .normal)
+        button.titleLabel?.font = UIFont(name:"SFPro-Medium", size: 16)
+        button.backgroundColor = .black
+        button.tintColor = .white
+        button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(doneTapped), for: .touchUpInside)
+        return button
     }()
     
     init(daysSchedule: [Schedule], delegate: SchedulebleDelegate) {

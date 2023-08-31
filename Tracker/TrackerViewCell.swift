@@ -36,19 +36,19 @@ final class TrackerViewCell: UICollectionViewCell {
     }()
     
     private lazy var nameLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.textColor = .white
-        lbl.font = UIFont(name: "SFPro-Medium", size: 12)
-        lbl.numberOfLines = 2
-        return lbl
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .white
+        label.font = UIFont(name: "SFPro-Medium", size: 12)
+        label.numberOfLines = 2
+        return label
     }()
     
     private lazy var  emojiLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.font = UIFont(name: "SFPro-Medium", size: 16)
-        return lbl
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "SFPro-Medium", size: 16)
+        return label
     }()
     
     private lazy var emojiView: UIView = {
@@ -73,21 +73,21 @@ final class TrackerViewCell: UICollectionViewCell {
     }()
     
     private lazy var  counterLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.font = UIFont(name: "SFPro-Medium", size: 12)
-        lbl.numberOfLines = 2
-        return lbl
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "SFPro-Medium", size: 12)
+        label.numberOfLines = 2
+        return label
     }()
     
     private lazy var doneButton: UIButton = {
-        let btn = UIButton()
-        btn.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(systemName: "plus")?.withTintColor(.white, renderingMode: .alwaysOriginal)
-        btn.setImage(image, for: .normal)
-        btn.layer.cornerRadius = 17
-        btn.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
-        return btn
+        button.setImage(image, for: .normal)
+        button.layer.cornerRadius = 17
+        button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+        return button
     }()
     
     weak var delegate: ExecutionManagerDelegate? = nil

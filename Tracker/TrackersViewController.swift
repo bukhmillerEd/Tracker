@@ -83,9 +83,10 @@ final class TrackersViewController: UIViewController {
     
     private lazy var trackersCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        let colView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        colView.translatesAutoresizingMaskIntoConstraints = false
-        return colView
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.alwaysBounceVertical = true
+        return collectionView
     }()
     
     private lazy var searchController: UISearchController = {
@@ -142,11 +143,7 @@ final class TrackersViewController: UIViewController {
         
         addSubviews()
         
-        filterDataByDate()
-    }
-    
-    @objc private func dateButtonTapped() {
-        filterDataByDate()
+        applyFilters()
     }
     
     @objc private func addTrackerTapped() {
@@ -157,7 +154,7 @@ final class TrackersViewController: UIViewController {
     
     @objc private func dateChanged(sender: UIDatePicker) {
         currentDate = datePicker.date
-        filterDataByDate()
+        applyFilters()
     }
     
     private func filterDataByDate() {
@@ -172,28 +169,24 @@ final class TrackersViewController: UIViewController {
     }
     
     private func filterData(filteringСondition:(Tracker)->(Bool)) {
-        visibleCategories = categories.map({ trackerCategory in
+        visibleCategories = categories.map { trackerCategory in
             TrackerCategory(title: trackerCategory.title,
-                            trackers: trackerCategory.trackers.filter({ tracket in
-                filteringСondition(tracket)
-            }))
-        }).filter({ category in
-            category.trackers.count > 0
-        })
-        trackersCollectionView.reloadData()
+                            trackers: trackerCategory.trackers.filter { filteringСondition($0) }
+            )
+        }.filter { $0.trackers.count > 0 }
         capStackView.isHidden = !visibleCategories.isEmpty
     }
     
     private func applyFilters() {
-        guard let filterText = searchController.searchBar.searchTextField.text?.lowercased(),
-              filterText.count > 0
-        else {
+        if let filterText = searchController.searchBar.searchTextField.text?.lowercased(),
+           filterText.count > 0 {
+            filterData { tracker in
+                tracker.name.lowercased().contains(filterText)
+            }
+        } else {
             filterDataByDate()
-            return
         }
-        filterData { tracker in
-            tracker.name.lowercased().contains(filterText)
-        }
+        trackersCollectionView.reloadData()
     }
     
     private func addSubviews() {
@@ -311,11 +304,7 @@ extension TrackersViewController: UISearchControllerDelegate {
 
 extension TrackersViewController: ExecutionManagerDelegate {
     func executionСontrol(id: UUID) {
-        if idCompletedTrackers.contains(id) {
-            removeExecutionTracker(id: id)
-        } else {
-            addExecutionTracker(id: id)
-        }
+        idCompletedTrackers.contains(id) ? removeExecutionTracker(id: id) : addExecutionTracker(id: id)
     }
     
     private func addExecutionTracker(id: UUID) {
@@ -332,18 +321,15 @@ extension TrackersViewController: ExecutionManagerDelegate {
 
 extension TrackersViewController: CreatableAndEditableTrackerDelegate {
     func createTracker(tracker: Tracker) {
-        let section = 0
-        let oldCount = visibleCategories[section].trackers.count
-        categories[section].trackers.append(tracker)
-        applyFilters()
-        let newCount = visibleCategories[section].trackers.count
-    
-        trackersCollectionView.performBatchUpdates {
-            let indexPaths = (oldCount..<newCount).map { i in
-                IndexPath(row: i, section: section)
-            }
-            trackersCollectionView.insertItems(at: indexPaths)
-        }
+        
+        // TODO: После реализации экранов с созданием категории сделать добавление в нужную категорию
+        let sectionIndex = 0
+        let removedCategory = categories.remove(at: sectionIndex)
+        let newCategory = TrackerCategory(title: removedCategory.title,
+                                          trackers: removedCategory.trackers + [tracker])
+        categories.append(newCategory)
+        filterDataByDate()
+        trackersCollectionView.reloadData()
     }
 }
 

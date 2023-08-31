@@ -10,27 +10,27 @@ final class AdditingTrackerViewController: UIViewController {
     weak var delegate: CreatableAndEditableTrackerDelegate? = nil
     
     private lazy var habitButton: UIButton = {
-        let btn = UIButton()
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("Привычка", for: .normal)
-        btn.titleLabel?.font = UIFont(name:"SFPro-Medium", size: 16)
-        btn.backgroundColor = .black
-        btn.tintColor = .white
-        btn.layer.cornerRadius = 16
-        btn.addTarget(self, action: #selector(addHabit), for: .touchUpInside)
-        return btn
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Привычка", for: .normal)
+        button.titleLabel?.font = UIFont(name:"SFPro-Medium", size: 16)
+        button.backgroundColor = .black
+        button.tintColor = .white
+        button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(addHabit), for: .touchUpInside)
+        return button
     }()
     
     private lazy var eventButton: UIButton = {
-        let btn = UIButton()
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("Нерегулярное событие", for: .normal)
-        btn.titleLabel?.font = UIFont(name:"SFPro-Medium", size: 16)
-        btn.backgroundColor = .black
-        btn.tintColor = .white
-        btn.layer.cornerRadius = 16
-        btn.addTarget(self, action: #selector(addEvent), for: .touchUpInside)
-        return btn
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Нерегулярное событие", for: .normal)
+        button.titleLabel?.font = UIFont(name:"SFPro-Medium", size: 16)
+        button.backgroundColor = .black
+        button.tintColor = .white
+        button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(addEvent), for: .touchUpInside)
+        return button
     }()
     
     private lazy var stackButtons: UIStackView = {
@@ -42,11 +42,11 @@ final class AdditingTrackerViewController: UIViewController {
     }()
     
     private lazy var titleLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = "Создание трекера"
-        lbl.font = UIFont(name: "SFPro-Medium", size: 16)
-        return lbl
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Создание трекера"
+        label.font = UIFont(name: "SFPro-Medium", size: 16)
+        return label
     }()
     
     override func viewDidLoad() {

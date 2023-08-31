@@ -7,19 +7,20 @@ final class ScheduleItem: UIView {
     private var switchChangeProcessing: ((Bool) -> ())
     
     private lazy var dayNameLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = dayName
-        lbl.font = UIFont(name: "SFPro-Regular", size: 17)
-        return lbl
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = dayName
+        label.font = UIFont(name: "SFPro-Regular", size: 17)
+        return label
     }()
     
     private lazy var switchButton: UISwitch = {
-        let btn = UISwitch()
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.addTarget(self, action: #selector(switchWasChenged), for: .touchUpInside)
-        btn.isOn = switchIsOn
-        return btn
+        let switchButton = UISwitch()
+        switchButton.translatesAutoresizingMaskIntoConstraints = false
+        switchButton.addTarget(self, action: #selector(switchWasChenged), for: .touchUpInside)
+        switchButton.isOn = switchIsOn
+        switchButton.onTintColor = UIColor(named: "switchColor")
+        return switchButton
     }()
     
     init(dayName: String, switchIsOn: Bool, switchChangeProcessing: @escaping (Bool) -> ()) {

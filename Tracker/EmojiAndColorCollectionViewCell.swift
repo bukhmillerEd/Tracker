@@ -7,11 +7,11 @@ final class EmojiAndColorCollectionViewCell: UICollectionViewCell {
     private var modelView: EmojiAndColorCollectionViewCellModelView? = nil
     
     private let emojiLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.font = UIFont(name: "SFPro-Bold", size: 32)
-        lbl.textAlignment = .center
-        return lbl
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "SFPro-Bold", size: 32)
+        label.textAlignment = .center
+        return label
     }()
     
     private let colorView: UIView = {

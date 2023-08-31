@@ -50,11 +50,11 @@ final class TrackerViewController: UIViewController {
     }()
     
     private lazy var titleLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = typeTracker == .habit ? "Новая привычка" : "Новое нерегулярное событие"
-        lbl.font = UIFont(name: "SFPro-Medium", size: 16)
-        return lbl
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = typeTracker == .habit ? "Новая привычка" : "Новое нерегулярное событие"
+        label.font = UIFont(name: "SFPro-Medium", size: 16)
+        return label
     }()
     
     private lazy var nameTextField: TextFieldWidthPadding = {
@@ -68,14 +68,14 @@ final class TrackerViewController: UIViewController {
     }()
     
     private lazy var errorLimitSumbolsLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = "Ограничение 38 символов"
-        lbl.font = UIFont(name: "SFPro-Regular", size: 17)
-        lbl.textColor = UIColor(named: "colorTextError")
-        lbl.textAlignment = .center
-        lbl.isHidden = true
-        return lbl
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Ограничение 38 символов"
+        label.font = UIFont(name: "SFPro-Regular", size: 17)
+        label.textColor = UIColor(named: "colorTextError")
+        label.textAlignment = .center
+        label.isHidden = true
+        return label
     }()
     
     private lazy var stackName: UIStackView = {
@@ -104,22 +104,22 @@ final class TrackerViewController: UIViewController {
     }()
     
     private lazy var categoryLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = "Категория"
-        lbl.font = UIFont(name: "SFPro-Regular", size: 17)
-        lbl.backgroundColor = UIColor(white: 0, alpha: 0)
-        return lbl
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Категория"
+        label.font = UIFont(name: "SFPro-Regular", size: 17)
+        label.backgroundColor = UIColor(white: 0, alpha: 0)
+        return label
     }()
     
     private lazy var categoryNameLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = "Важное"
-        lbl.font = UIFont(name: "SFPro-Regular", size: 17)
-        lbl.textColor = UIColor(named: "ypGray")
-        lbl.backgroundColor = UIColor(white: 0, alpha: 0)
-        return lbl
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Важное"
+        label.font = UIFont(name: "SFPro-Regular", size: 17)
+        label.textColor = UIColor(named: "ypGray")
+        label.backgroundColor = UIColor(white: 0, alpha: 0)
+        return label
     }()
     
     private lazy var chevronImageCategory: UIImageView = {
@@ -148,13 +148,13 @@ final class TrackerViewController: UIViewController {
     }()
     
     private lazy var categoryButton: UIButton = {
-        let btn = UIButton()
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.titleLabel?.font = UIFont(name:"SFPro-Medium", size: 16)
-        btn.backgroundColor = UIColor(white: 0, alpha: 0)
-        btn.layer.cornerRadius = 16
-        btn.addTarget(self, action: #selector(categoryButtonTapped), for: .touchUpInside)
-        return btn
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = UIFont(name:"SFPro-Medium", size: 16)
+        button.backgroundColor = UIColor(white: 0, alpha: 0)
+        button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(categoryButtonTapped), for: .touchUpInside)
+        return button
     }()
     
     private lazy var containerViewScheduleButton: UIView = {
@@ -166,29 +166,29 @@ final class TrackerViewController: UIViewController {
     }()
     
     private lazy var scheduleButton: UIButton = {
-        let btn = UIButton()
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.titleLabel?.font = UIFont(name:"SFPro-Medium", size: 16)
-        btn.backgroundColor = UIColor(white: 0, alpha: 0)
-        btn.layer.cornerRadius = 16
-        btn.addTarget(self, action: #selector(scheduleButtonTapped), for: .touchUpInside)
-        return btn
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = UIFont(name:"SFPro-Medium", size: 16)
+        button.backgroundColor = UIColor(white: 0, alpha: 0)
+        button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(scheduleButtonTapped), for: .touchUpInside)
+        return button
     }()
     
     private lazy var scheduleLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.text = "Расписание"
-        lbl.font = UIFont(name: "SFPro-Regular", size: 17)
-        return lbl
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Расписание"
+        label.font = UIFont(name: "SFPro-Regular", size: 17)
+        return label
     }()
     
     private lazy var scheduleSelectedLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.font = UIFont(name: "SFPro-Regular", size: 17)
-        lbl.textColor = UIColor(named: "ypGray")
-        return lbl
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "SFPro-Regular", size: 17)
+        label.textColor = UIColor(named: "ypGray")
+        return label
     }()
     
     private lazy var stackScheduleButtonLabels: UIStackView = {
@@ -210,7 +210,7 @@ final class TrackerViewController: UIViewController {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.isScrollEnabled = false
-       collection.allowsMultipleSelection = true
+        collection.allowsMultipleSelection = true
         return collection
     }()
     
@@ -223,31 +223,31 @@ final class TrackerViewController: UIViewController {
     }()
     
     private lazy var cancelButton: UIButton = {
-        let btn = UIButton()
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("Отменить", for: .normal)
-        btn.backgroundColor = .white
-        btn.layer.cornerRadius = 16
-        btn.titleLabel?.font = UIFont(name: "SFPro-Medium", size: 16)
-        btn.layer.borderColor = UIColor(named: "ypRed")?.cgColor
-        btn.setTitleColor(UIColor(named: "ypRed"), for: .normal)
-        btn.tintColor = .black
-        btn.layer.borderWidth = 1
-        btn.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
-        return btn
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Отменить", for: .normal)
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 16
+        button.titleLabel?.font = UIFont(name: "SFPro-Medium", size: 16)
+        button.layer.borderColor = UIColor(named: "ypRed")?.cgColor
+        button.setTitleColor(UIColor(named: "ypRed"), for: .normal)
+        button.tintColor = .black
+        button.layer.borderWidth = 1
+        button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        return button
     }()
     
     private lazy var createButton: UIButton = {
-        let btn = UIButton()
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("Создать", for: .normal)
-        btn.backgroundColor = .gray
-        btn.layer.cornerRadius = 16
-        btn.titleLabel?.font = UIFont(name: "SFPro-Medium", size: 16)
-        btn.tintColor = .white
-        btn.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
-        btn.isEnabled = false
-        return btn
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Создать", for: .normal)
+        button.backgroundColor = .gray
+        button.layer.cornerRadius = 16
+        button.titleLabel?.font = UIFont(name: "SFPro-Medium", size: 16)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
+        button.isEnabled = false
+        return button
     }()
     
     init(typeTracker: TypeTracker) {
@@ -536,12 +536,8 @@ extension TrackerViewController: UICollectionViewDataSource {
 
 extension TrackerViewController: SchedulebleDelegate {
     func selectedSchedule(daysSchedule: [Schedule]) {
+        scheduleSelectedLabel.text = daysSchedule.count == 7 ? "Каждый день" : daysSchedule.map { $0.shortRepresentation() }.joined(separator: ", ")
         schedule = daysSchedule
-        if daysSchedule.count == 7 {
-            scheduleSelectedLabel.text = "Каждый день"
-        } else {
-            scheduleSelectedLabel.text = daysSchedule.map{ $0.shortRepresentation() }.joined(separator: ", ")
-        }
         checkRequiredFields()
     }
 }
