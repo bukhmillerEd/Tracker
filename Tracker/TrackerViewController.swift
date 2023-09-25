@@ -272,6 +272,10 @@ final class TrackerViewController: UIViewController {
         emojisAndColorsCollectionView.register(HeaderSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderSupplementaryView.headerId)
         
         addSubviews()
+        
+        if typeTracker == .event {
+            schedule = [.friday, .monday, .saturday, .thursday, .sunday, .tuesday, .wednesday]
+        }
     }
     
     private func addSubviews() {
@@ -420,7 +424,8 @@ final class TrackerViewController: UIViewController {
     }
     
     @objc private func createButtonTapped() {
-        let tracker = Tracker(name: nameTextField.text ?? "",
+        let tracker = Tracker(id: UUID(),
+                              name: nameTextField.text ?? "",
                               color: selectedColor,
                               emoji: selectedEmoji,
                               schedule: schedule)

@@ -8,7 +8,7 @@
 import UIKit
 
 struct Tracker {
-    let id = UUID()
+    let id: UUID
     let name: String
     let color: UIColor?
     let emoji: String
@@ -61,4 +61,16 @@ enum Schedule: Int, CaseIterable {
             return "Вс"
         }
     }
+    
+    static func decodeSchedule(from string: String) -> [Schedule] {
+        let components = string.components(separatedBy: ",")
+        var schedules: [Schedule] = []
+        for component in components {
+            if let value = Int(component), let schedule = Schedule(rawValue: value) {
+                schedules.append(schedule)
+            }
+        }
+        return schedules
+    }
+    
 }
