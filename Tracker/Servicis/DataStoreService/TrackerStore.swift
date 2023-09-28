@@ -117,15 +117,15 @@ extension TrackerStore: NSFetchedResultsControllerDelegate {
     ) {
         switch type {
         case .insert:
-            guard let indexPath = newIndexPath else { fatalError() }
+            guard let indexPath = newIndexPath else { return }
             insertedIndexesPath.append(indexPath)
         case .delete:
-            guard let indexPath = indexPath else { fatalError() }
+            guard let indexPath = indexPath else { return }
             deletedIndexesPath.append(indexPath)
         case .move:
             break
         case .update:
-            guard let indexPath = indexPath else { fatalError() }
+            guard let indexPath = indexPath else { return }
             updatedIndexesPath.append(indexPath)
         @unknown default:
             break
