@@ -2,7 +2,7 @@
 import UIKit
 
 protocol CreatableAndEditableTrackerDelegate: AnyObject {
-    func createTracker(tracker: Tracker)
+    func createTracker(tracker: Tracker, inCategoryWithTitle titleCategory: String)
 }
 
 final class AdditingTrackerViewController: UIViewController {
@@ -91,7 +91,8 @@ final class AdditingTrackerViewController: UIViewController {
         let vc = TrackerViewController(typeTracker: typeTracker)
         vc.completionHandler = { [weak self] tracker in
             guard let tracker, let self else { return }
-            self.delegate?.createTracker(tracker: tracker)
+            // TODO: Пока добавляем в одну категорию, после реализации экрана выбора категорий поправить
+            self.delegate?.createTracker(tracker: tracker, inCategoryWithTitle: "Важное")
             self.dismiss(animated: true)
         }
         present(vc, animated: true)

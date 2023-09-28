@@ -9,24 +9,7 @@ final class TrackerViewCell: UICollectionViewCell {
     
     static let cellID = "cellID"
     
-    private var viewModel: TrackerCellViewModel? {
-        didSet {
-            trackerView.backgroundColor = viewModel?.color
-            nameLabel.text = viewModel?.name ?? ""
-            emojiLabel.text = viewModel?.emoji ?? ""
-            counterLabel.text = "\(viewModel?.counter ?? 0) \(viewModel?.counter.days() ?? "")"
-            doneButton.backgroundColor = viewModel?.color
-            doneButton.isEnabled = viewModel?.doneButtonIsEnabled ?? false
-            doneButton.layer.opacity = viewModel?.doneButtonIsEnabled ?? false == true ? 1 : 0.3
-            var image: UIImage? = nil
-            if let trackerIsDone = viewModel?.trackerIsDone, trackerIsDone {
-                image = UIImage(systemName: "checkmark")
-            } else {
-                image = UIImage(systemName: "plus")
-            }
-            doneButton.setImage(image?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-        }
-    }
+    private lazy var viewModel: TrackerCellViewModel? = nil
     
     private lazy var trackerView: UIView = {
         let view = UIView()
@@ -152,6 +135,16 @@ final class TrackerViewCell: UICollectionViewCell {
     
     func configure(model: TrackerCellViewModel) {
         self.viewModel = model
+        guard let viewModel else { return }
+        trackerView.backgroundColor = viewModel.color
+        nameLabel.text = viewModel.name
+        emojiLabel.text = viewModel.emoji
+        counterLabel.text = "\(viewModel.counter) \(viewModel.counter.days())"
+        doneButton.backgroundColor = viewModel.color
+        doneButton.isEnabled = viewModel.doneButtonIsEnabled
+        doneButton.layer.opacity = viewModel.doneButtonIsEnabled == true ? 1 : 0.3
+        var image: UIImage? = viewModel.trackerIsDone ? UIImage(systemName: "checkmark") : UIImage(systemName: "plus")
+        doneButton.setImage(image?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
     }
     
     @objc func doneButtonTapped() {
@@ -161,7 +154,6 @@ final class TrackerViewCell: UICollectionViewCell {
             viewModel?.counter += 1
         }
         delegate?.executionСontrol(id: viewModel?.id ?? UUID())
-        viewModel?.trackerIsDone.toggle()
     }
     
 }
