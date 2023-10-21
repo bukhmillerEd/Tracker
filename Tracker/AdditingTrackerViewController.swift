@@ -89,10 +89,9 @@ final class AdditingTrackerViewController: UIViewController {
     
     private func showViewNewTracker(typeTracker: TypeTracker) {
         let vc = TrackerViewController(typeTracker: typeTracker)
-        vc.completionHandler = { [weak self] tracker in
-            guard let tracker, let self else { return }
-            // TODO: Пока добавляем в одну категорию, после реализации экрана выбора категорий поправить
-            self.delegate?.createTracker(tracker: tracker, inCategoryWithTitle: "Важное")
+        vc.completionHandler = { [weak self] tracker, titleCategory in
+            guard let tracker, let titleCategory, let self else { return }
+            self.delegate?.createTracker(tracker: tracker, inCategoryWithTitle: titleCategory)
             self.dismiss(animated: true)
         }
         present(vc, animated: true)

@@ -1,8 +1,9 @@
-//
-//  PageOnboarding2.swift
-//  Tracker
-//
-//  Created by Эдуард Бухмиллер on 04.10.2023.
-//
+import UIKit
 
-import Foundation
+final class PageOnboarding2: PageOnboarding {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        label.text = "Даже если это не литры воды и йога"
+        imageView.image = UIImage(named: "onbording2")
+    }
+}

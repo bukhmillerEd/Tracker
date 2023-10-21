@@ -14,6 +14,10 @@ protocol DataProvider {
     func getCountCompletedTrackers(withID id: UUID) -> UInt
     func addRecordTracker(_ record: TrackerRecord)
     func removeRecordTracker(_ record: TrackerRecord)
+    func getAllNamesCategories() -> [String]
+    func addNewTrackerCategory(withTitle title: String) -> TrackerCategoryCoreData?
+    func deleteCotegory(withName name: String)
+    func editTitleCategory(withName name: String, newName: String)
 }
 
 final class DataProviderForCoreData: DataProvider {
@@ -86,6 +90,29 @@ final class DataProviderForCoreData: DataProvider {
     func removeRecordTracker(_ record: TrackerRecord) {
         guard let trackerCoreData = trackerStore.fetchTrackers(withId: record.id) else { return }
         let _ = trackerReckordStore.deleteTrackerRecord(trackerCoreData: trackerCoreData, date: record.date)
+    }
+    
+    func getAllNamesCategories() -> [String] {
+        do {
+            return try trackerCategoryStore.getAllCategories().compactMap{ $0.title}
+        } catch {
+            return []
+        }
+    }
+    
+    func addNewTrackerCategory(withTitle title: String) -> TrackerCategoryCoreData? {
+        let trackerCategory = try? trackerCategoryStore.getTrackerCategoryCoreData(byName: title)
+        return trackerCategory == nil ? try? trackerCategoryStore.addNewTrackerCategory(title) : trackerCategory
+    }
+    
+    func deleteCotegory(withName name: String) {
+        let categoruCoreData = try? trackerCategoryStore.getTrackerCategoryCoreData(byName: name)
+        guard let categoruCoreData else { return }
+        try? trackerCategoryStore.deleteCotegory(category: categoruCoreData)
+    }
+    
+    func editTitleCategory(withName name: String, newName: String) {
+        try? trackerCategoryStore.editTitleCategory(withName: name, newName: newName)
     }
 }
 

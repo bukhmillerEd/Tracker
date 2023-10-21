@@ -143,7 +143,7 @@ final class TrackerViewCell: UICollectionViewCell {
         doneButton.backgroundColor = viewModel.color
         doneButton.isEnabled = viewModel.doneButtonIsEnabled
         doneButton.layer.opacity = viewModel.doneButtonIsEnabled == true ? 1 : 0.3
-        var image: UIImage? = viewModel.trackerIsDone ? UIImage(systemName: "checkmark") : UIImage(systemName: "plus")
+        let image: UIImage? = viewModel.trackerIsDone ? UIImage(systemName: "checkmark") : UIImage(systemName: "plus")
         doneButton.setImage(image?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
     }
     

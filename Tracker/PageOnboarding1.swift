@@ -1,8 +1,9 @@
-//
-//  PageOnboarding1.swift
-//  Tracker
-//
-//  Created by Эдуард Бухмиллер on 04.10.2023.
-//
+import UIKit
 
-import Foundation
+final class PageOnboarding1: PageOnboarding {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        label.text = "Отслеживайте только то, что хотите"
+        imageView.image = UIImage(named: "onbording1")
+    }
+}

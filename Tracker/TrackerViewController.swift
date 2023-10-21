@@ -10,7 +10,7 @@ final class TrackerViewController: UIViewController {
     
     private var typeTracker: TypeTracker
     private var schedule: [Schedule] = []
-    var completionHandler: ((_ tracker: Tracker?) -> Void)?
+    var completionHandler: ((_ tracker: Tracker?, _ titleCategory: String?) -> Void)?
     private var selectedEmoji = ""
     private var selectedColor: UIColor? = nil
     
@@ -115,7 +115,6 @@ final class TrackerViewController: UIViewController {
     private lazy var categoryNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Важное"
         label.font = UIFont(name: "SFPro-Regular", size: 17)
         label.textColor = UIColor(named: "ypGray")
         label.backgroundColor = UIColor(white: 0, alpha: 0)
@@ -411,7 +410,12 @@ final class TrackerViewController: UIViewController {
     }
     
     @objc private func categoryButtonTapped() {
-        print("categoryButtonTapped")
+        let trackersListVC = CategoriesListViewController()
+        trackersListVC.completionHandler = { [weak self] selectedNameCategory in
+            guard let self else { return }
+            self.categoryNameLabel.text = selectedNameCategory
+        }
+        present(trackersListVC, animated: true)
     }
     
     @objc private func scheduleButtonTapped() {
@@ -430,7 +434,7 @@ final class TrackerViewController: UIViewController {
                               emoji: selectedEmoji,
                               schedule: schedule)
         dismiss(animated: true)
-        completionHandler?(tracker)
+        completionHandler?(tracker, categoryNameLabel.text)
     }
 }
 
