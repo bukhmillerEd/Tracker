@@ -43,7 +43,7 @@ final class TrackersViewController: UIViewController {
         return datePicker
     }()
     
-    private lazy var trackersCollectionView: UICollectionView = {
+    lazy var trackersCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -270,20 +270,7 @@ extension TrackersViewController: CreatableAndEditableTrackerDelegate {
 
 extension TrackersViewController: TrackersViewControllerDelegate {
     func updateTrackersCollections(didUpdate update: TrackersUpdate) {
-        var insertedSections = IndexSet()
-        for indexPath in update.insertedIndexesPath {
-            if trackersCollectionView.numberOfSections - 1 < indexPath.section {
-                insertedSections.insert(indexPath.section)
-            }
-        }
-        trackersCollectionView.performBatchUpdates {
-            trackersCollectionView.deleteItems(at: update.deletedIndexesPath)
-            trackersCollectionView.insertItems(at: update.insertedIndexesPath)
-            trackersCollectionView.reloadItems(at: update.updatedIndexesPath)
-            if insertedSections.count > 0 {
-                trackersCollectionView.insertSections(insertedSections)
-            }
-        }
-        hiddenCapStackView(hide: trackersCollectionView.numberOfSections > 0)
+        trackersCollectionView.reloadData()
+        hiddenCapStackView(hide: dataProvider?.numberOfSections() ?? 0 > 0)
     }
 }
