@@ -6,17 +6,18 @@ final class TabBarController: UITabBarController {
         super.viewDidLoad()
         
         let trackersVC = TrackersViewController()
-        trackersVC.tabBarItem = UITabBarItem(title: "Трекеры",
-                                             image: UIImage(named: "trackers"),
-                                             tag: 0)
-        
+        let navigationController1 = UINavigationController(rootViewController: trackersVC)
+        navigationController1.tabBarItem = UITabBarItem(title: NSLocalizedString("trackersVC.title", comment: ""),
+                                                        image: UIImage(named: "trackers"),
+                                                        tag: 0)
+
         let statisticsVC = StatisticsViewController()
-        statisticsVC.tabBarItem = UITabBarItem(title: "Статистика",
-                                               image: UIImage(named: "stats"),
-                                               tag: 1)
-        let navigationController = UINavigationController()
-        navigationController.viewControllers = [trackersVC]
-        self.viewControllers = [navigationController, statisticsVC]
+        let navigationController2 = UINavigationController(rootViewController: statisticsVC)
+        navigationController2.tabBarItem = UITabBarItem(title: NSLocalizedString("statisticsVC.title", comment: ""),
+                                                        image: UIImage(named: "stats"),
+                                                        tag: 1)
+        
+        viewControllers = [navigationController1, navigationController2]
     }
     
 }

@@ -26,10 +26,12 @@ final class TrackerRecordStore {
         try? context.save()
     }
     
-    func getCountTrackerRecords(for trackerCoreData: TrackerCoreData) -> UInt {
+    func getCountTrackerRecords(for trackerCoreData: TrackerCoreData?) -> UInt {
         let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = TrackerRecordCoreData.fetchRequest()
-        let predicate1 = NSPredicate(format: "trackers == %@", trackerCoreData)
-        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1])
+        if let trackerCoreData {
+            let predicate1 = NSPredicate(format: "trackers == %@", trackerCoreData)
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1])
+        }
         let objects = try? context.fetch(fetchRequest)
         return UInt(objects?.count ?? 0)
     }

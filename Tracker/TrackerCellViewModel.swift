@@ -8,4 +8,5 @@ struct TrackerCellViewModel {
     let doneButtonIsEnabled: Bool
     var counter: UInt
     let id: UUID
+    let isPin: Bool
 }

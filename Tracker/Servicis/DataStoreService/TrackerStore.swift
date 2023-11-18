@@ -28,17 +28,26 @@ final class TrackerStore: NSObject {
         self.delegate = delegate
     }
     
-    func fetchTrackers(forWeekDay weekDay: String) {
+    func fetchTrackers(forWeekDay weekDay: String, сompleted: Bool?) {
         let fetchRequest = TrackerCoreData.fetchRequest()
         fetchRequest.sortDescriptors = [
-            NSSortDescriptor(keyPath: \TrackerCoreData.name, ascending: true)
+            NSSortDescriptor(keyPath: \TrackerCoreData.trackerCategories?.dateCreation, ascending: true)
         ]
-        fetchRequest.predicate = NSPredicate(format: "schedule CONTAINS[cd] %@", weekDay)
+        var predicates = [NSPredicate(format: "schedule CONTAINS[cd] %@ OR schedule = %@", weekDay, "")]
+        
+        if let сompleted {
+           let format = сompleted ? "trackerRecords.@count > 0" : "trackerRecords.@count == 0"
+           predicates.append(NSPredicate(format: format))
+        }
+        
+        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        
+        fetchRequest.predicate = compoundPredicate
 
         let controller = NSFetchedResultsController(
             fetchRequest: fetchRequest,
             managedObjectContext: context,
-            sectionNameKeyPath: "trackerCategories.title",
+            sectionNameKeyPath: "trackerCategories.sectionTitle",
             cacheName: nil
         )
         fetchedResultsController = controller
@@ -81,12 +90,36 @@ final class TrackerStore: NSObject {
         return trackerCoreData
     }
     
+    func removeTracker(withID id: UUID) {
+        guard let trackerCoreData = fetchTrackers(withId: id) else { return }
+        context.delete(trackerCoreData)
+        try? context.save()
+    }
+    
     private func converSchedule(from schedule: [Schedule]) -> String {
         var scheduleInString = ""
         schedule.forEach { day in
             scheduleInString += scheduleInString.isEmpty ? "\(day.rawValue)" : ",\(day.rawValue)"
         }
         return scheduleInString
+    }
+    
+    func saveEditedTracker(tracker: Tracker, in trackerCategoryCoreData: TrackerCategoryCoreData) {
+        guard let trackerCoreData = fetchTrackers(withId: tracker.id) else { return }
+        trackerCoreData.name = tracker.name
+        trackerCoreData.emoji = tracker.emoji
+        trackerCoreData.id = tracker.id
+        trackerCoreData.color = UIColor.hexString(from: tracker.color)
+        trackerCoreData.schedule = converSchedule(from: tracker.schedule)
+        trackerCoreData.trackerCategories = trackerCategoryCoreData
+        try? context.save()
+    }
+    
+    func removeTrackerFromCategory(withID id: UUID, from nameCategory: String) -> TrackerCoreData? {
+        guard let trackerCoreData = fetchTrackers(withId: id) else { return nil}
+        trackerCoreData.trackerCategories = nil
+        try? context.save()
+        return trackerCoreData
     }
 
 }

@@ -5,7 +5,7 @@ final class CategoryViewController: UIViewController {
     private lazy var nameTextField: TextFieldWidthPadding = {
         let field = TextFieldWidthPadding(paddingTop: 0, paddingBottom: 0, paddingLeft: 16, paddingRight: 16)
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.placeholder = "Введите название категории"
+        field.placeholder = NSLocalizedString("category.nameTextField.placeholder", comment: "Text on the name category field placeholder")
         field.layer.cornerRadius = 16
         field.text = viewModel?.nameBeforeEdit
         field.backgroundColor = UIColor(named: "backgroundField")
@@ -24,7 +24,7 @@ final class CategoryViewController: UIViewController {
     private lazy var doneButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Готово", for: .normal)
+        button.setTitle(NSLocalizedString("done", comment: "Text on the button"), for: .normal)
         button.layer.cornerRadius = 16
         button.titleLabel?.font = UIFont(name: "SFPro-Medium", size: 16)
         button.tintColor = .white

@@ -13,7 +13,7 @@ class PageOnboarding: UIViewController {
     lazy var button = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Вот это технологии!", for: .normal)
+        button.setTitle(NSLocalizedString("onboarding.button.text", comment: "Text on the onboarding button"), for: .normal)
         button.layer.cornerRadius = 16
         button.backgroundColor = .black
         button.titleLabel?.textColor = .white

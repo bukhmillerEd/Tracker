@@ -26,7 +26,7 @@ final class ScheduleViewController: UIViewController {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Расписание"
+        label.text = NSLocalizedString("schedule", comment: "")
         label.font = UIFont(name: "SFPro-Medium", size: 16)
         return label
     }()
@@ -38,13 +38,15 @@ final class ScheduleViewController: UIViewController {
         stack.spacing = 0
         stack.backgroundColor = UIColor(named: "backgroundField")
         stack.layer.cornerRadius = 16
+        stack.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        stack.isLayoutMarginsRelativeArrangement = true
         return stack
     }()
     
     private lazy var doneButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Готово", for: .normal)
+        button.setTitle(NSLocalizedString("done", comment: ""), for: .normal)
         button.titleLabel?.font = UIFont(name:"SFPro-Medium", size: 16)
         button.backgroundColor = .black
         button.tintColor = .white

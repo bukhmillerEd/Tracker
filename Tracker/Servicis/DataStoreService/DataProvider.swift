@@ -3,7 +3,6 @@ import UIKit
 
 protocol DataProvider {
     init (delegate: TrackersViewControllerDelegate?)
-    func filterTrackers(byWeekDay weekDay: String)
     func filterTrackers(byName name: String)
     func numberOfSections() -> Int
     func numberOfRowsInSection(_ section: Int) -> Int
@@ -18,6 +17,12 @@ protocol DataProvider {
     func addNewTrackerCategory(withTitle title: String) -> TrackerCategoryCoreData?
     func deleteCotegory(withName name: String)
     func editTitleCategory(withName name: String, newName: String)
+    func removeTracker(withID id: UUID)
+    func saveEditedTracker(tracker: Tracker, titleTrackerCategory: String)
+    func removeTrackerFromCategory(withID id: UUID, from nameCategory: String)
+    func getTrackers(withFilter selectedFilter: TypesFilters, forWeakDay weakDay: String)
+    func getCountTrackers() -> Int
+    func getCompletedTrackers() -> UInt
 }
 
 final class DataProviderForCoreData: DataProvider {
@@ -29,10 +34,6 @@ final class DataProviderForCoreData: DataProvider {
     
     init(delegate: TrackersViewControllerDelegate?) {
         self.delegate = delegate
-    }
-    
-    func filterTrackers(byWeekDay weekDay: String) {
-        trackerStore.fetchTrackers(forWeekDay: weekDay)
     }
     
     func filterTrackers(byName name: String) {
@@ -114,6 +115,44 @@ final class DataProviderForCoreData: DataProvider {
     func editTitleCategory(withName name: String, newName: String) {
         try? trackerCategoryStore.editTitleCategory(withName: name, newName: newName)
     }
+    
+    func removeTracker(withID id: UUID) {
+        trackerStore.removeTracker(withID: id)
+    }
+    
+    func saveEditedTracker(tracker: Tracker, titleTrackerCategory: String) {
+        guard let trackerCategory = try? trackerCategoryStore.getTrackerCategoryCoreData(byName: titleTrackerCategory) else { return }
+        trackerStore.saveEditedTracker(tracker: tracker, in: trackerCategory)
+    }
+    
+    func removeTrackerFromCategory(withID id: UUID, from nameCategory: String) {
+        guard let trackerCoreData = trackerStore.removeTrackerFromCategory(withID: id, from: nameCategory) else { return }
+        trackerCategoryStore.removeRelationship(with: trackerCoreData, nameCategory: nameCategory)
+    }
+    
+    func getTrackers(withFilter selectedFilter: TypesFilters, forWeakDay weakDay: String) {
+        var сompleted: Bool?
+        switch selectedFilter {
+        case .allTraclers:
+            break
+        case .allTrackersToday:
+            break
+        case .completed:
+            сompleted = true
+        case .incomplete:
+            сompleted = false
+        }
+        trackerStore.fetchTrackers(forWeekDay: weakDay, сompleted: сompleted)
+    }
+    
+    func getCountTrackers() -> Int {
+        trackerStore.fetchedResultsController?.fetchedObjects?.count ?? 0
+    }
+    
+    func getCompletedTrackers() -> UInt {
+        return trackerReckordStore.getCountTrackerRecords(for: nil)
+    }
+    
 }
 
 extension DataProviderForCoreData: TrackerStoreDelegate {

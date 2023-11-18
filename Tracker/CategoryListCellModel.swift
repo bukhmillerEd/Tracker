@@ -1,7 +1,7 @@
 
 import Foundation
 
-struct CategoryListCellModel {
-    let name: String
-    let isSelected: Bool
+struct CategoryListCellModel: ModelCell {
+    var name: String
+    var isSelected: Bool
 }

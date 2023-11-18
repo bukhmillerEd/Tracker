@@ -12,7 +12,7 @@ final class AdditingTrackerViewController: UIViewController {
     private lazy var habitButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Привычка", for: .normal)
+        button.setTitle(NSLocalizedString("habit", comment: ""), for: .normal)
         button.titleLabel?.font = UIFont(name:"SFPro-Medium", size: 16)
         button.backgroundColor = .black
         button.tintColor = .white
@@ -24,7 +24,7 @@ final class AdditingTrackerViewController: UIViewController {
     private lazy var eventButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Нерегулярное событие", for: .normal)
+        button.setTitle(NSLocalizedString("irregularEvent", comment: ""), for: .normal)
         button.titleLabel?.font = UIFont(name:"SFPro-Medium", size: 16)
         button.backgroundColor = .black
         button.tintColor = .white
@@ -44,7 +44,7 @@ final class AdditingTrackerViewController: UIViewController {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Создание трекера"
+        label.text = NSLocalizedString("creatingTtracker", comment: "")
         label.font = UIFont(name: "SFPro-Medium", size: 16)
         return label
     }()

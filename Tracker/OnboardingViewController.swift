@@ -20,7 +20,6 @@ final class OnboardingViewController: UIPageViewController {
         super.viewDidLoad()
         dataSource = self
         delegate = self
-        transitionStyle
         if let firstVC = pages.first {
             setViewControllers([firstVC], direction: .forward, animated: true)
         }

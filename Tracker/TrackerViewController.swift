@@ -13,6 +13,9 @@ final class TrackerViewController: UIViewController {
     var completionHandler: ((_ tracker: Tracker?, _ titleCategory: String?) -> Void)?
     private var selectedEmoji = ""
     private var selectedColor: UIColor? = nil
+    private var tracker: Tracker?
+    private var nameCategory: String?
+    private let countCompletedTracker: UInt?
     
     let emojis = ["🙂", "😻", "🌺", "🐶", "❤️", "😱", "😇", "😡", "🥶", "🤔", "🙌", "🍔", "🥦", "🏓", "🥇", "🎸", "🏝", "😪"]
     let colors = [
@@ -52,15 +55,22 @@ final class TrackerViewController: UIViewController {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = typeTracker == .habit ? "Новая привычка" : "Новое нерегулярное событие"
         label.font = UIFont(name: "SFPro-Medium", size: 16)
+        return label
+    }()
+    
+    private lazy var counterCompletedTrackersLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "SFPro-Bold", size: 32)
+        label.textAlignment = .center
         return label
     }()
     
     private lazy var nameTextField: TextFieldWidthPadding = {
         let field = TextFieldWidthPadding(paddingTop: 0, paddingBottom: 0, paddingLeft: 16, paddingRight: 16)
         field.translatesAutoresizingMaskIntoConstraints = false
-        field.placeholder = "Введите название трекера"
+        field.placeholder = NSLocalizedString("tracker.nameField.text", comment: "")
         field.layer.cornerRadius = 16
         field.backgroundColor = UIColor(named: "backgroundField")
         field.clearButtonMode = .whileEditing
@@ -70,7 +80,7 @@ final class TrackerViewController: UIViewController {
     private lazy var errorLimitSumbolsLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Ограничение 38 символов"
+        label.text = NSLocalizedString("tracker.errorLimitSumbols", comment: "")
         label.font = UIFont(name: "SFPro-Regular", size: 17)
         label.textColor = UIColor(named: "colorTextError")
         label.textAlignment = .center
@@ -93,6 +103,8 @@ final class TrackerViewController: UIViewController {
         stack.spacing = 0
         stack.backgroundColor = UIColor(named: "backgroundField")
         stack.layer.cornerRadius = 16
+        stack.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        stack.isLayoutMarginsRelativeArrangement = true
         return stack
     }()
     
@@ -106,7 +118,7 @@ final class TrackerViewController: UIViewController {
     private lazy var categoryLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Категория"
+        label.text = NSLocalizedString("tracker.category.Label", comment: "")
         label.font = UIFont(name: "SFPro-Regular", size: 17)
         label.backgroundColor = UIColor(white: 0, alpha: 0)
         return label
@@ -177,7 +189,7 @@ final class TrackerViewController: UIViewController {
     private lazy var scheduleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Расписание"
+        label.text = NSLocalizedString("schedule", comment: "")
         label.font = UIFont(name: "SFPro-Regular", size: 17)
         return label
     }()
@@ -224,7 +236,7 @@ final class TrackerViewController: UIViewController {
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Отменить", for: .normal)
+        button.setTitle(NSLocalizedString("cancel", comment: ""), for: .normal)
         button.backgroundColor = .white
         button.layer.cornerRadius = 16
         button.titleLabel?.font = UIFont(name: "SFPro-Medium", size: 16)
@@ -239,7 +251,7 @@ final class TrackerViewController: UIViewController {
     private lazy var createButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Создать", for: .normal)
+        button.setTitle(tracker == nil ? NSLocalizedString("create", comment: "") : NSLocalizedString("save", comment: ""), for: .normal)
         button.backgroundColor = .gray
         button.layer.cornerRadius = 16
         button.titleLabel?.font = UIFont(name: "SFPro-Medium", size: 16)
@@ -249,8 +261,11 @@ final class TrackerViewController: UIViewController {
         return button
     }()
     
-    init(typeTracker: TypeTracker) {
+    init(typeTracker: TypeTracker, tracker: Tracker? = nil, nameCategory: String? = nil, countCompletedTracker: UInt? = nil) {
         self.typeTracker = typeTracker
+        self.tracker = tracker
+        self.nameCategory = nameCategory
+        self.countCompletedTracker = countCompletedTracker
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -271,9 +286,33 @@ final class TrackerViewController: UIViewController {
         emojisAndColorsCollectionView.register(HeaderSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderSupplementaryView.headerId)
         
         addSubviews()
+
+        insertDataIntoFields()
+    }
+    
+    private func insertDataIntoFields() {
+        categoryNameLabel.text = nameCategory
         
-        if typeTracker == .event {
-            schedule = [.friday, .monday, .saturday, .thursday, .sunday, .tuesday, .wednesday]
+        let textForNewTracker = typeTracker == .habit ? "tracker.title.newHabit" : "tracker.title.event"
+        titleLabel.text = NSLocalizedString(textForNewTracker, comment: "")
+        
+        guard let tracker else { return }
+        
+        let textForEditTracker = typeTracker == .habit ? "tracker.title.editHabit" : "tracker.title.editEvent"
+        titleLabel.text = NSLocalizedString(textForEditTracker, comment: "")
+        
+        counterCompletedTrackersLabel.text = String.localizedStringWithFormat(NSLocalizedString("days", comment: ""), countCompletedTracker ?? 0)
+        
+        nameTextField.text = tracker.name
+        schedule = tracker.schedule
+        selectedSchedule(daysSchedule: schedule)
+        selectedColor = tracker.color
+        selectedEmoji = tracker.emoji
+        if let indexSelectedEmoji = emojis.firstIndex(where: {$0 == selectedEmoji}) {
+            emojisAndColorsCollectionView.selectItem(at: IndexPath(row: indexSelectedEmoji, section: 0), animated: false, scrollPosition: .top)
+        }
+        if let indexSelectedColor = colors.firstIndex(where: {UIColor.hexString(from: $0) == UIColor.hexString(from: selectedColor)}) {
+            emojisAndColorsCollectionView.selectItem(at: IndexPath(row: indexSelectedColor, section: 1), animated: false, scrollPosition: .top)
         }
     }
     
@@ -286,6 +325,10 @@ final class TrackerViewController: UIViewController {
         stackName.addArrangedSubview(nameTextField)
         stackName.addArrangedSubview(errorLimitSumbolsLabel)
         contentView.addSubview(stackName)
+        
+        if tracker != nil {
+            contentView.addSubview(counterCompletedTrackersLabel)
+        }
         
         stackButtons.addArrangedSubview(containerViewCategoryButton)
         stackButtons.addArrangedSubview(containerViewScheduleButton)
@@ -318,6 +361,22 @@ final class TrackerViewController: UIViewController {
     }
     
     private func applyConstraints() {
+   
+        if tracker != nil {
+            NSLayoutConstraint.activate([
+                counterCompletedTrackersLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+                counterCompletedTrackersLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
+                counterCompletedTrackersLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
+                stackName.topAnchor.constraint(equalTo: counterCompletedTrackersLabel.bottomAnchor, constant: 40),
+                contentView.heightAnchor.constraint(equalToConstant: typeTracker == .habit ? 952: 892),
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                stackName.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
+                contentView.heightAnchor.constraint(equalToConstant: typeTracker == .habit ? 850 : 790),
+            ])
+        }
+        
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -329,14 +388,12 @@ final class TrackerViewController: UIViewController {
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            contentView.heightAnchor.constraint(equalToConstant: typeTracker == .habit ? 850 : 790),
             
             titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 30),
             titleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             
             stackName.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             stackName.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            stackName.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
             
             nameTextField.heightAnchor.constraint(equalToConstant: 75),
             
@@ -399,7 +456,11 @@ final class TrackerViewController: UIViewController {
     
     private func checkRequiredFields() {
         let fieldsFilled = (nameTextField.text?.count ?? 0 >= 1)
-        && (typeTracker == .habit ? schedule.count > 0 : true) && (selectedColor != nil) && (!selectedEmoji.isEmpty)
+        && (typeTracker == .habit ? schedule.count > 0 : true)
+        && (selectedColor != nil)
+        && (!selectedEmoji.isEmpty)
+        && (categoryNameLabel.text?.count ?? 0 > 0)
+        
         if fieldsFilled {
             createButton.isEnabled = true
             createButton.backgroundColor = .black
@@ -414,6 +475,7 @@ final class TrackerViewController: UIViewController {
         trackersListVC.completionHandler = { [weak self] selectedNameCategory in
             guard let self else { return }
             self.categoryNameLabel.text = selectedNameCategory
+            self.checkRequiredFields()
         }
         present(trackersListVC, animated: true)
     }
@@ -428,11 +490,13 @@ final class TrackerViewController: UIViewController {
     }
     
     @objc private func createButtonTapped() {
-        let tracker = Tracker(id: UUID(),
+        let id = tracker == nil ? UUID() : tracker?.id
+        let tracker = Tracker(id: id ?? UUID(),
                               name: nameTextField.text ?? "",
                               color: selectedColor,
                               emoji: selectedEmoji,
                               schedule: schedule)
+                                    
         dismiss(animated: true)
         completionHandler?(tracker, categoryNameLabel.text)
     }
@@ -475,11 +539,12 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         deselectSelectedItemsInSection(indexPath: indexPath, collectionView: collectionView)
         let cell = collectionView.cellForItem(at: indexPath) as? EmojiAndColorCollectionViewCell
-        cell?.selectCell()
         if indexPath.section == 0 {
             selectedEmoji = emojis[indexPath.row]
+            cell?.selectCell(selectedEmoji: true, selectedColor: false)
         } else {
             selectedColor = colors[indexPath.row]
+            cell?.selectCell(selectedEmoji: false, selectedColor: true)
         }
         checkRequiredFields()
     }
@@ -520,13 +585,20 @@ extension TrackerViewController: UICollectionViewDataSource {
         else {
             return UICollectionViewCell()
         }
+        var typeCell = TypeCell.color
+        var color: UIColor? = colors[indexPath.row]
+        var emoji = ""
         if indexPath.section == 0 {
-            let model = EmojiAndColorCollectionViewCellModelView(typeCell: .emoji, color: nil, emoji: emojis[indexPath.row])
-            cell.configure(modelView: model)
-        } else {
-            let model = EmojiAndColorCollectionViewCellModelView(typeCell: .color, color: colors[indexPath.row], emoji: "")
-            cell.configure(modelView: model)
+            typeCell = TypeCell.emoji
+            color = nil
+            emoji = emojis[indexPath.row]
         }
+        cell.configure(modelView:
+                        EmojiAndColorCollectionViewCellModelView(typeCell: typeCell,
+                                                                 color: color,
+                                                                 emoji: emoji,
+                                                                 selectedColor: selectedColor != nil && UIColor.hexString(from: selectedColor)  == UIColor.hexString(from: color),
+                                                                 selectedemoji: !selectedEmoji.isEmpty && selectedEmoji == emoji))
         return cell
     }
     
@@ -537,7 +609,7 @@ extension TrackerViewController: UICollectionViewDataSource {
         else {
             return UICollectionReusableView()
         }
-        view.configure(headerText: indexPath.section == 0 ? "Emoji" : "Цвет")
+        view.configure(headerText: indexPath.section == 0 ? "Emoji" : NSLocalizedString("color", comment: ""))
         return view
     }
 
@@ -545,7 +617,7 @@ extension TrackerViewController: UICollectionViewDataSource {
 
 extension TrackerViewController: SchedulebleDelegate {
     func selectedSchedule(daysSchedule: [Schedule]) {
-        scheduleSelectedLabel.text = daysSchedule.count == 7 ? "Каждый день" : daysSchedule.map { $0.shortRepresentation() }.joined(separator: ", ")
+        scheduleSelectedLabel.text = daysSchedule.count == 7 ? NSLocalizedString("everyDay", comment: "") : daysSchedule.map { $0.shortRepresentation() }.joined(separator: ", ")
         schedule = daysSchedule
         checkRequiredFields()
     }
