@@ -55,12 +55,12 @@ final class TrackerStore: NSObject {
         try? controller.performFetch()
     }
     
-    func fetchTrackers(withStringInName string: String) {
+    func fetchTrackers(withStringInName string: String, forWeakDay weakDay: String) {
         let fetchRequest = TrackerCoreData.fetchRequest()
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(keyPath: \TrackerCoreData.name, ascending: true)
         ]
-        fetchRequest.predicate = NSPredicate(format: "name CONTAINS[cd] %@", string)
+        fetchRequest.predicate = NSPredicate(format: "name CONTAINS[cd] %@ AND schedule CONTAINS[cd] %@ OR schedule = %@", string, weakDay, "")
         let controller = NSFetchedResultsController(
             fetchRequest: fetchRequest,
             managedObjectContext: context,

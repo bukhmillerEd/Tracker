@@ -9,12 +9,22 @@ enum TypeTracker {
 final class TrackerViewController: UIViewController {
     
     private var typeTracker: TypeTracker
-    private var schedule: [Schedule] = []
+    private var schedule: [Schedule] = [] {
+        didSet {
+            hiddenScheduleSelectedLabel(hidden: schedule.count == 0)
+            scheduleSelectedLabel.text = schedule.count == 7 ? NSLocalizedString("everyDay", comment: "") : schedule.map { $0.shortRepresentation() }.joined(separator: ", ")
+        }
+    }
     var completionHandler: ((_ tracker: Tracker?, _ titleCategory: String?) -> Void)?
     private var selectedEmoji = ""
     private var selectedColor: UIColor? = nil
     private var tracker: Tracker?
-    private var nameCategory: String?
+    private var nameCategory: String? {
+        didSet {
+            categoryNameLabel.text = nameCategory
+            hiddenCategoryNameLabel(hidden: nameCategory == nil)
+        }
+    }
     private let countCompletedTracker: UInt?
     
     let emojis = ["🙂", "😻", "🌺", "🐶", "❤️", "😱", "😇", "😡", "🥶", "🤔", "🙌", "🍔", "🥦", "🏓", "🥇", "🎸", "🏝", "😪"]
@@ -130,6 +140,7 @@ final class TrackerViewController: UIViewController {
         label.font = UIFont(name: "SFPro-Regular", size: 17)
         label.textColor = UIColor(named: "ypGray")
         label.backgroundColor = UIColor(white: 0, alpha: 0)
+        label.isHidden = nameCategory == nil
         return label
     }()
     
@@ -199,6 +210,7 @@ final class TrackerViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "SFPro-Regular", size: 17)
         label.textColor = UIColor(named: "ypGray")
+        label.isHidden = schedule.count == 0
         return label
     }()
     
@@ -470,11 +482,19 @@ final class TrackerViewController: UIViewController {
         }
     }
     
+    private func hiddenCategoryNameLabel(hidden: Bool) {
+        categoryNameLabel.isHidden = hidden
+    }
+    
+    private func hiddenScheduleSelectedLabel(hidden: Bool) {
+        scheduleSelectedLabel.isHidden = hidden
+    }
+    
     @objc private func categoryButtonTapped() {
         let trackersListVC = CategoriesListViewController()
         trackersListVC.completionHandler = { [weak self] selectedNameCategory in
             guard let self else { return }
-            self.categoryNameLabel.text = selectedNameCategory
+            self.nameCategory = selectedNameCategory
             self.checkRequiredFields()
         }
         present(trackersListVC, animated: true)
@@ -617,7 +637,6 @@ extension TrackerViewController: UICollectionViewDataSource {
 
 extension TrackerViewController: SchedulebleDelegate {
     func selectedSchedule(daysSchedule: [Schedule]) {
-        scheduleSelectedLabel.text = daysSchedule.count == 7 ? NSLocalizedString("everyDay", comment: "") : daysSchedule.map { $0.shortRepresentation() }.joined(separator: ", ")
         schedule = daysSchedule
         checkRequiredFields()
     }

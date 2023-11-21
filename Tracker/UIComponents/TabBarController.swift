@@ -2,8 +2,16 @@ import UIKit
 
 final class TabBarController: UITabBarController {
     
+    private lazy var separatorView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Colors.separatorTabBarColor
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        addSubviews()
         
         let trackersVC = TrackersViewController()
         let navigationController1 = UINavigationController(rootViewController: trackersVC)
@@ -11,7 +19,7 @@ final class TabBarController: UITabBarController {
                                                         image: UIImage(named: "trackers"),
                                                         tag: 0)
 
-        let statisticsVC = StatisticsViewController()
+        let statisticsVC = StatisticsViewController(viewModel: StatisticsViewModel())
         let navigationController2 = UINavigationController(rootViewController: statisticsVC)
         navigationController2.tabBarItem = UITabBarItem(title: NSLocalizedString("statisticsVC.title", comment: ""),
                                                         image: UIImage(named: "stats"),
@@ -20,4 +28,13 @@ final class TabBarController: UITabBarController {
         viewControllers = [navigationController1, navigationController2]
     }
     
+    private func addSubviews() {
+        tabBar.addSubview(separatorView)
+        NSLayoutConstraint.activate([
+            separatorView.trailingAnchor.constraint(equalTo: tabBar.trailingAnchor),
+            separatorView.leadingAnchor.constraint(equalTo: tabBar.leadingAnchor),
+            separatorView.topAnchor.constraint(equalTo: tabBar.topAnchor),
+            separatorView.heightAnchor.constraint(equalToConstant: 1)
+        ])
+    }
 }

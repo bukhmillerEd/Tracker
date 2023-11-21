@@ -46,6 +46,7 @@ final class TrackerViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(systemName: "pin.fill")?.withTintColor(Colors.colorText, renderingMode: .alwaysOriginal)
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
@@ -150,6 +151,10 @@ final class TrackerViewCell: UICollectionViewCell {
         let image: UIImage? = viewModel.trackerIsDone ? UIImage(systemName: "checkmark") : UIImage(systemName: "plus")
         doneButton.setImage(image?.withTintColor(Colors.colorText, renderingMode: .alwaysOriginal), for: .normal)
         pinImageView.isHidden = !viewModel.isPin
+    }
+    
+    func getViewForPreview() -> UIView {
+        return trackerView
     }
     
     @objc func doneButtonTapped() {

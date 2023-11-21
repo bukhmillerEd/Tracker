@@ -3,7 +3,7 @@ import UIKit
 
 protocol DataProvider {
     init (delegate: TrackersViewControllerDelegate?)
-    func filterTrackers(byName name: String)
+    func filterTrackers(byName name: String, forWeakDay weakDay: String)
     func numberOfSections() -> Int
     func numberOfRowsInSection(_ section: Int) -> Int
     func getTracker(at indexPath : IndexPath) -> Tracker?
@@ -36,8 +36,8 @@ final class DataProviderForCoreData: DataProvider {
         self.delegate = delegate
     }
     
-    func filterTrackers(byName name: String) {
-        trackerStore.fetchTrackers(withStringInName: name)
+    func filterTrackers(byName name: String, forWeakDay weakDay: String) {
+        trackerStore.fetchTrackers(withStringInName: name, forWeakDay: weakDay)
     }
     
     func numberOfSections() -> Int {

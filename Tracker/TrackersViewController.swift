@@ -92,7 +92,6 @@ final class TrackersViewController: UIViewController {
         dataProvider = DataProviderForCoreData(delegate: self)
         
         analyticsService = AnalyticsService()
-        analyticsService?.report(analyticalDataModel: AnalyticalDataModel(event: .open, screen: .main, item: nil))
         
         trackersCollectionView.delegate = self
         trackersCollectionView.dataSource = self
@@ -113,6 +112,10 @@ final class TrackersViewController: UIViewController {
         configureViews(isData: dataProvider?.numberOfSections() ?? 0 > 0,
                        textCap: NSLocalizedString("capViewTextStart", comment: "Text for the cap on the trackers sceen"),
                        imageCap: UIImage(named: "imageCap"))
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        analyticsService?.report(analyticalDataModel: AnalyticalDataModel(event: .open, screen: .main, item: nil))
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -347,6 +350,13 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
         })
     }
     
+    func collectionView(_ collectionView: UICollectionView,
+                        contextMenuConfiguration configuration: UIContextMenuConfiguration,
+                        highlightPreviewForItemAt indexPath: IndexPath) -> UITargetedPreview? {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerViewCell else { return nil }
+        return UITargetedPreview(view: cell.getViewForPreview())
+    }
+    
 }
 
 extension TrackersViewController: UISearchResultsUpdating {
@@ -354,7 +364,7 @@ extension TrackersViewController: UISearchResultsUpdating {
         guard let filterText = searchController.searchBar.searchTextField.text?.lowercased(),
               filterText.count > 0
         else { return }
-        dataProvider?.filterTrackers(byName: filterText)
+        dataProvider?.filterTrackers(byName: filterText, forWeakDay: filterWeekDay)
         trackersCollectionView.reloadData()
         configureViews(isData: dataProvider?.getCountTrackers() ?? 0 > 0,
                        textCap: NSLocalizedString("capViewTextAfterSearch", comment: ""),

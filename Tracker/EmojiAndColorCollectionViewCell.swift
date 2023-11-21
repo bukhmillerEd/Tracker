@@ -70,7 +70,7 @@ final class EmojiAndColorCollectionViewCell: UICollectionViewCell {
             self.modelView?.selectedColor = selectedColor
             layer.borderWidth = 3
             layer.cornerRadius = 8
-            layer.borderColor = modelView.color?.cgColor
+            layer.borderColor = modelView.color?.withAlphaComponent(0.3).cgColor
         }
     }
     

@@ -20,7 +20,16 @@ final class StatisticsViewController: UIViewController {
         return table
     }()
     
-    private let viewModel = StatisticsViewModel()
+    private var viewModel: StatisticsViewModel?
+    
+    init(viewModel: StatisticsViewModel) {
+        super.init(nibName: nil, bundle: nil)
+        self.viewModel = viewModel
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,15 +41,16 @@ final class StatisticsViewController: UIViewController {
         
         addSubviews()
         
-        viewModel.$statistics.bind { [weak self] _ in
+        viewModel?.$statistics.bind { [weak self] _ in
             guard let self else { return }
             self.statisticsTable.reloadData()
-            self.controlVisibilityCapView(isHidden: self.viewModel.statistics.count > 0)
+            self.controlVisibilityCapView(isHidden: self.viewModel?.statistics.count ?? 0 > 0)
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        viewModel.getStatisrics()
+        super.viewWillAppear(animated)
+        viewModel?.getStatisrics()
     }
     
     private func addSubviews() {
@@ -48,8 +58,10 @@ final class StatisticsViewController: UIViewController {
         view.addSubview(capView)
         
         NSLayoutConstraint.activate([
-            capView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
-            capView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            capView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            capView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            capView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            capView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
             statisticsTable.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             statisticsTable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 77),
@@ -67,7 +79,7 @@ final class StatisticsViewController: UIViewController {
 extension StatisticsViewController: UITableViewDataSource {
    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.statistics.count
+        viewModel?.statistics.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -75,7 +87,7 @@ extension StatisticsViewController: UITableViewDataSource {
         else {
             return UITableViewCell()
         }
-        let statisticModel = viewModel.statistics[indexPath.row]
+        guard let statisticModel = viewModel?.statistics[indexPath.row] else { return UITableViewCell()}
         cell.configure(model: StatisticsCellModel(coutn: statisticModel.coutn, name: statisticModel.name))
         return cell
     }
