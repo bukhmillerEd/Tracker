@@ -361,8 +361,7 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
 
 extension TrackersViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        guard let filterText = searchController.searchBar.searchTextField.text?.lowercased(),
-              filterText.count > 0
+        guard let filterText = searchController.searchBar.searchTextField.text?.lowercased()
         else { return }
         dataProvider?.filterTrackers(byName: filterText, forWeakDay: filterWeekDay)
         trackersCollectionView.reloadData()
@@ -375,6 +374,9 @@ extension TrackersViewController: UISearchResultsUpdating {
 extension TrackersViewController: UISearchControllerDelegate {
     func didDismissSearchController(_ searchController: UISearchController) {
         getTrackers()
+        configureViews(isData: dataProvider?.getCountTrackers() ?? 0 > 0,
+                       textCap: NSLocalizedString("capViewTextAfterSearch", comment: ""),
+                       imageCap: UIImage(named: "imageCapAfterSearch"))
     }
 }
 

@@ -20,11 +20,11 @@ final class StatisticsViewController: UIViewController {
         return table
     }()
     
-    private var viewModel: StatisticsViewModel?
+    private var viewModel: StatisticsViewModel
     
     init(viewModel: StatisticsViewModel) {
-        super.init(nibName: nil, bundle: nil)
         self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -41,16 +41,16 @@ final class StatisticsViewController: UIViewController {
         
         addSubviews()
         
-        viewModel?.$statistics.bind { [weak self] _ in
+        viewModel.$statistics.bind { [weak self] _ in
             guard let self else { return }
             self.statisticsTable.reloadData()
-            self.controlVisibilityCapView(isHidden: self.viewModel?.statistics.count ?? 0 > 0)
+            self.controlVisibilityCapView(isHidden: self.viewModel.statistics.count > 0)
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel?.getStatisrics()
+        viewModel.getStatisrics()
     }
     
     private func addSubviews() {
@@ -79,7 +79,7 @@ final class StatisticsViewController: UIViewController {
 extension StatisticsViewController: UITableViewDataSource {
    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel?.statistics.count ?? 0
+        viewModel.statistics.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -87,7 +87,7 @@ extension StatisticsViewController: UITableViewDataSource {
         else {
             return UITableViewCell()
         }
-        guard let statisticModel = viewModel?.statistics[indexPath.row] else { return UITableViewCell()}
+        let statisticModel = viewModel.statistics[indexPath.row]
         cell.configure(model: StatisticsCellModel(coutn: statisticModel.coutn, name: statisticModel.name))
         return cell
     }
