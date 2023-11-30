@@ -5,7 +5,7 @@ final class CategoriesListViewController: UIViewController {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Категория"
+        label.text = NSLocalizedString("categories.title", comment: "")
         label.font = UIFont(name: "SFPro-Medium", size: 16)
         label.contentMode = .top
         return label
@@ -25,7 +25,7 @@ final class CategoriesListViewController: UIViewController {
     private lazy var addCategoryButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Добавить категорию", for: .normal)
+        button.setTitle(NSLocalizedString("addCategories", comment: ""), for: .normal)
         button.titleLabel?.font = UIFont(name:"SFPro-Medium", size: 16)
         button.backgroundColor = .black
         button.tintColor = .white
@@ -37,7 +37,8 @@ final class CategoriesListViewController: UIViewController {
     private lazy var capView = {
         let view = CapView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.capText.text = "Привычки и события можно \n объединить по смыслу"
+        view.textCap = NSLocalizedString("categories.capViewText", comment: "")
+        view.imageCap = UIImage(named: "imageCap")
         return view
     }()
     
@@ -63,6 +64,7 @@ final class CategoriesListViewController: UIViewController {
         view.addSubview(titleLabel)
         view.addSubview(addCategoryButton)
         view.addSubview(categoriesTable)
+        view.addSubview(capView)
         
         let heightCategoriesTable = CGFloat(viewModel.categories.count) * CategoryListCell.heightCell
         categoriesTableHeightConstraint = categoriesTable.heightAnchor.constraint(equalToConstant: heightCategoriesTable)
@@ -80,17 +82,12 @@ final class CategoriesListViewController: UIViewController {
             addCategoryButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             addCategoryButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             addCategoryButton.heightAnchor.constraint(equalToConstant: 60),
+            
+            capView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            capView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            capView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            capView.bottomAnchor.constraint(equalTo: addCategoryButton.topAnchor, constant: -8)
         ])
-        
-        if viewModel.categories.isEmpty {
-            view.addSubview(capView)
-            NSLayoutConstraint.activate([
-                capView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-                capView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-                capView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-                capView.bottomAnchor.constraint(equalTo: addCategoryButton.topAnchor, constant: -8),
-            ])
-        }
     }
     
     private func recalculateTableHeight() {
@@ -100,10 +97,10 @@ final class CategoriesListViewController: UIViewController {
     }
     
     private func confirmDeletion(nameCategory: String) {
-        let alertController = UIAlertController(title: "Эта категория точно не нужна?",
+        let alertController = UIAlertController(title: NSLocalizedString("alert.confirmDeletion", comment: ""),
                                                 message: nil,
                                                 preferredStyle: .actionSheet)
-        let deleteAction = UIAlertAction(title: "Удалить", style: .destructive) { [weak self] _ in
+        let deleteAction = UIAlertAction(title: NSLocalizedString("delete", comment: ""), style: .destructive) { [weak self] _ in
             guard let self else { return }
             self.viewModel.deleteCategory(withName: nameCategory)
             self.categoriesTable.reloadData()
@@ -112,7 +109,7 @@ final class CategoriesListViewController: UIViewController {
         }
         alertController.addAction(deleteAction)
         
-        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: NSLocalizedString("cancel", comment: ""), style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
     
         present(alertController, animated: true, completion: nil)
@@ -163,11 +160,11 @@ extension CategoriesListViewController: UITableViewDelegate {
         let nameCategory = viewModel.categories[index].name
         
         return UIContextMenuConfiguration(identifier: id, previewProvider: nil) {_ in
-            let editAction = UIAction(title: "Редактировать"){ [weak self] _ in
+            let editAction = UIAction(title: NSLocalizedString("edit", comment: "")){ [weak self] _ in
                 guard let self else { return }
                 self.presentVCCategory(typeOperation: .editingCategory(nameCategory: nameCategory))
             }
-            let removeAction = UIAction(title: "Удалить"){ [weak self] _ in
+            let removeAction = UIAction(title: NSLocalizedString("delete", comment: "")){ [weak self] _ in
                 guard let self else { return }
                 self.confirmDeletion(nameCategory: nameCategory)
             }

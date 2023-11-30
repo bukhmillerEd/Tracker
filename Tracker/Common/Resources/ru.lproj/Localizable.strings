@@ -1,0 +1,68 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Эдуард Бухмиллер on 16.11.2023.
+  
+*/
+"capViewTextStart" = "Привычки и события можно \n объединить по смыслу";
+"capViewTextAfterSearch" = "Ничего не найдено";
+"cancel" = "Отменить";
+"trackersVC.title" = "Трекеры";
+"statisticsVC.title" = "Статистика";
+"onboarding1.text" = "Отслеживайте только то, что хотите";
+"onboarding2.text" = "Даже если это не литры воды и йога";
+"onboarding.button.text" = "Вот это технологии!";
+"category.nameTextField.placeholder" = "Введите название категории";
+"done" = "Готово";
+"category.title.newCategory" = "Новая категория";
+"category.edit.title" = "Редактирование категории";
+"categories.title" = "Категория";
+"addCategories" = "Добавить категорию";
+"categories.capViewText" = "Привычки и события можно \n объединить по смыслу";
+"alert.confirmDeletion" = "Эта категория точно не нужна?";
+"delete" = "Удалить";
+"edit" = "Редактировать";
+"tracker.title.newHabit" = "Новая привычка";
+"tracker.title.event" = "Новое нерегулярное событие";
+
+"tracker.title.editHabit" = "Редактирование привычки";
+"tracker.title.editEvent" = "Редактирование нерегулярного события";
+
+"tracker.nameField.text" = "Введите название трекера";
+"tracker.errorLimitSumbols" = "Ограничение 38 символов";
+"tracker.category.Label" = "Категория";
+"schedule" = "Расписание";
+"create" = "Создать";
+"color" = "Цвет";
+"everyDay" = "Каждый день";
+"search" = "Поиск";
+"habit" = "Привычка";
+"irregularEvent" = "Нерегулярное событие";
+"creatingTtracker" = "Создание трекера";
+"monday" = "Понеделиник";
+"tuesday" = "Вторник";
+"wednesday" = "Среда";
+"thursday" = "Четверг";
+"friday" = "Пятница";
+"saturday" = "Суббота";
+"sunday" = "Воскресенье";
+"mon" = "Пн";
+"tue" = "Вт";
+"wed" = "Ср";
+"thu" = "Чт";
+"fri" = "Пт";
+"sat" = "Сб";
+"sun" = "Вс";
+"pin" = "Закрепить";
+"unpin" = "Открепить";
+"alert.confirmDeletionTracker" = "Уверены что хотите удалить трекер?";
+"save" = "Сохранить";
+"pinCategoryName" = "Закрепленные";
+"filterButton" = "Фильтры";
+"filters.title" = "Фильтры";
+"allTraclers" = "Все трекеры";
+"allTrackersToday" = "Трекеры на сегодня";
+"completed" = "Завершённые";
+"incomplete" = "Незавершённые";
+"textCapStatistics" = "Анализировать пока нечего";

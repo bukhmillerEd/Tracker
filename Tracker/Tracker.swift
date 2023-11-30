@@ -27,38 +27,38 @@ enum Schedule: Int, CaseIterable {
     func representation() -> String {
         switch self {
         case .monday:
-            return "Понеделиник"
+            return NSLocalizedString("monday", comment: "")
         case .tuesday:
-            return "Вторник"
+            return NSLocalizedString("tuesday", comment: "")
         case .wednesday:
-            return "Среда"
+            return NSLocalizedString("wednesday", comment: "")
         case .thursday:
-            return "Четверг"
+            return NSLocalizedString("thursday", comment: "")
         case .friday:
-            return "Пятница"
+            return NSLocalizedString("friday", comment: "")
         case .saturday:
-            return "Суббота"
+            return NSLocalizedString("saturday", comment: "")
         case .sunday:
-            return "Воскресенье"
+            return NSLocalizedString("sunday", comment: "")
         }
     }
     
     func shortRepresentation() -> String {
         switch self {
         case .monday:
-            return "Пн"
+            return NSLocalizedString("mon", comment: "")
         case .tuesday:
-            return "Вт"
+            return NSLocalizedString("tue", comment: "")
         case .wednesday:
-            return "Ср"
+            return NSLocalizedString("wed", comment: "")
         case .thursday:
-            return "Чт"
+            return NSLocalizedString("thu", comment: "")
         case .friday:
-            return "Пт"
+            return NSLocalizedString("fri", comment: "")
         case .saturday:
-            return "Сб"
+            return NSLocalizedString("sat", comment: "")
         case .sunday:
-            return "Вс"
+            return NSLocalizedString("sun", comment: "")
         }
     }
     

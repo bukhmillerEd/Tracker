@@ -8,8 +8,6 @@ extension UIStackView {
         insertArrangedSubview(separator, at: index)
         
         separator.heightAnchor.constraint(equalToConstant: thickness).isActive = true
-        separator.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
-        separator.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16).isActive = true
     }
     
     func addSeparators(color: UIColor, thickness: CGFloat) {

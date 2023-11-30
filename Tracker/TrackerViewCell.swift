@@ -45,7 +45,8 @@ final class TrackerViewCell: UICollectionViewCell {
     private lazy var pinImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: "pin.fill")?.withTintColor(.white, renderingMode: .alwaysOriginal)
+        imageView.image = UIImage(systemName: "pin.fill")?.withTintColor(Colors.colorText, renderingMode: .alwaysOriginal)
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
@@ -77,6 +78,7 @@ final class TrackerViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        layer.cornerRadius = 16
         setupViews()
     }
     
@@ -139,12 +141,20 @@ final class TrackerViewCell: UICollectionViewCell {
         trackerView.backgroundColor = viewModel.color
         nameLabel.text = viewModel.name
         emojiLabel.text = viewModel.emoji
-        counterLabel.text = "\(viewModel.counter) \(viewModel.counter.days())"
+        counterLabel.text =  String.localizedStringWithFormat(
+            NSLocalizedString("days", comment: ""),
+            viewModel.counter
+        )
         doneButton.backgroundColor = viewModel.color
         doneButton.isEnabled = viewModel.doneButtonIsEnabled
         doneButton.layer.opacity = viewModel.doneButtonIsEnabled == true ? 1 : 0.3
         let image: UIImage? = viewModel.trackerIsDone ? UIImage(systemName: "checkmark") : UIImage(systemName: "plus")
-        doneButton.setImage(image?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+        doneButton.setImage(image?.withTintColor(Colors.colorText, renderingMode: .alwaysOriginal), for: .normal)
+        pinImageView.isHidden = !viewModel.isPin
+    }
+    
+    func getViewForPreview() -> UIView {
+        return trackerView
     }
     
     @objc func doneButtonTapped() {

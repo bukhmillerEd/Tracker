@@ -57,17 +57,20 @@ final class EmojiAndColorCollectionViewCell: UICollectionViewCell {
         } else {
             emojiLabel.text = modelView.emoji
         }
+        selectCell(selectedEmoji: modelView.selectedemoji, selectedColor: modelView.selectedColor)
     }
     
-    func selectCell() {
+    func selectCell(selectedEmoji: Bool, selectedColor: Bool) {
         guard let modelView else { return }
-        if modelView.typeCell == .emoji {
+        if modelView.typeCell == .emoji, selectedEmoji {
+            self.modelView?.selectedemoji = selectedEmoji
             layer.cornerRadius = 16
             backgroundColor = UIColor(named: "ypLightGray")
-        } else {
+        } else if modelView.typeCell == .color, selectedColor {
+            self.modelView?.selectedColor = selectedColor
             layer.borderWidth = 3
             layer.cornerRadius = 8
-            layer.borderColor = modelView.color?.cgColor
+            layer.borderColor = modelView.color?.withAlphaComponent(0.3).cgColor
         }
     }
     

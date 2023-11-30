@@ -1,3 +1,4 @@
+import Foundation
 
 enum TypeOperation {
     case newCategory
@@ -14,9 +15,9 @@ struct CategoryViewModel {
         get {
             switch typeOperation {
             case .newCategory:
-                return "Новая категория"
+                return NSLocalizedString("category.title.newCategory", comment: "Title on the screen new category")
             case .editingCategory(_):
-                return "Редактирование категории"
+                return NSLocalizedString("category.edit.title", comment: "Title on the screen editing category")
             }
         }
     }
